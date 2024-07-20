@@ -52,7 +52,9 @@ Shader "Custom/SumofSines"
                 float timeFactor = _Time * (_Speed * frequency);
                 float2 direction = dot(_Direction, float2(v.vertex.x, v.vertex.z));
 
-                float displacement1 = _Amplitude * sin(timeFactor + frequency * direction);
+                float displacement1 = _Amplitude * sin(timeFactor + frequency *.25 * direction);
+                float displacement2 = _Amplitude * sin(timeFactor + frequency * .5 * direction);
+                float displacement3 = _Amplitude * sin(timeFactor + frequency * 1 * direction);
 
 
                 float sumofsines = displacement1;
