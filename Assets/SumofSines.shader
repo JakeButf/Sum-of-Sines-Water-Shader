@@ -7,6 +7,7 @@ Shader "Custom/SumofSines"
         _Amplitude ("Amplitude", Range(0,1)) = 0.5
         _Speed ("Speed", Range(0, 100)) = 2
         _Wavelength ("Wavelength", Range(0, 100)) = 1
+        _Direction ("Direction", Vector) = (0, 0, 0, 0)
 
         _Color ("Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -40,6 +41,7 @@ Shader "Custom/SumofSines"
             float _Amplitude;
             float _Speed;
             float _Wavelength;
+            float2 _Direction;
 
             //Vertex Calculations
             v2f vert(appdata v)
@@ -47,11 +49,13 @@ Shader "Custom/SumofSines"
                 v2f o;
                 //Sum of Sines Displacement
                 float frequency = (2 * 3.14) / _Wavelength;
-                float displacement1 = _Amplitude * sin((_Time * (_Speed * frequency)) + (frequency * 0.25 * v.vertex.x));
-                float displacement2 = _Amplitude * sin((_Time * (_Speed * frequency)) + (frequency * 0.5 * v.vertex.x));
-                float displacement3 = _Amplitude * sin((_Time * (_Speed * frequency)) + (frequency * 1 * v.vertex.x));
+                float timeFactor = _Time * (_Speed * frequency);
+                float2 direction = dot(_Direction, float2(v.vertex.x, v.vertex.z));
 
-                float sumofsines = displacement1 + displacement2 + displacement3;
+                float displacement1 = _Amplitude * sin(timeFactor + frequency * direction);
+
+
+                float sumofsines = displacement1;
 
                 //Apply displacement to vertex position
                 o.vertex = UnityObjectToClipPos(v.vertex + float4(0, sumofsines, 0, 0)); //only displace y
