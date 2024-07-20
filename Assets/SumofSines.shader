@@ -5,8 +5,8 @@ Shader "Custom/SumofSines"
     {
 
         _Amplitude ("Amplitude", Range(0,1)) = 0.5
-        _Wavelength ("Wavelength", Range(0.1, 10)) = 1
         _Speed ("Speed", Range(0, 100)) = 2
+        _Wavelength ("Wavelength", Range(0, 100)) = 1
 
         _Color ("Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -38,15 +38,16 @@ Shader "Custom/SumofSines"
 
             //Shader Properties
             float _Amplitude;
-            float _Wavelength;
             float _Speed;
+            float _Wavelength;
 
             //Vertex Calculations
             v2f vert(appdata v)
             {
                 v2f o;
                 //Sum of Sines Displacement (1 sin wave)
-                float displacement = _Amplitude * sin(_Time * (_Speed * ((2 * 3.1415) / _Wavelength) + v.vertex.x));
+                float frequency = (2 * 3.14) / _Wavelength;
+                float displacement = _Amplitude * sin((_Time * (_Speed * frequency)) + (frequency * v.vertex.x));
 
                 //Apply displacement to vertex position
                 o.vertex = UnityObjectToClipPos(v.vertex + float4(0, displacement, 0, 0)); //only displace y
