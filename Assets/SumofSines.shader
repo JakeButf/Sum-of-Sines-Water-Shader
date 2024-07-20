@@ -57,7 +57,7 @@ Shader "Custom/SumofSines"
                 float displacement3 = _Amplitude * sin(timeFactor + frequency * 1 * direction);
 
 
-                float sumofsines = displacement1;
+                float sumofsines = displacement1 + displacement2 + displacement3;
 
                 //Apply displacement to vertex position
                 o.vertex = UnityObjectToClipPos(v.vertex + float4(0, sumofsines, 0, 0)); //only displace y
