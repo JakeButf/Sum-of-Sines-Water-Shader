@@ -45,12 +45,16 @@ Shader "Custom/SumofSines"
             v2f vert(appdata v)
             {
                 v2f o;
-                //Sum of Sines Displacement (1 sin wave)
+                //Sum of Sines Displacement
                 float frequency = (2 * 3.14) / _Wavelength;
-                float displacement = _Amplitude * sin((_Time * (_Speed * frequency)) + (frequency * v.vertex.x));
+                float displacement1 = _Amplitude * sin((_Time * (_Speed * frequency)) + (frequency * 0.25 * v.vertex.x));
+                float displacement2 = _Amplitude * sin((_Time * (_Speed * frequency)) + (frequency * 0.5 * v.vertex.x));
+                float displacement3 = _Amplitude * sin((_Time * (_Speed * frequency)) + (frequency * 1 * v.vertex.x));
+
+                float sumofsines = displacement1 + displacement2 + displacement3;
 
                 //Apply displacement to vertex position
-                o.vertex = UnityObjectToClipPos(v.vertex + float4(0, displacement, 0, 0)); //only displace y
+                o.vertex = UnityObjectToClipPos(v.vertex + float4(0, sumofsines, 0, 0)); //only displace y
                 o.uv = v.uv;
 
                 return o;
