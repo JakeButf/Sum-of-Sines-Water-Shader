@@ -22,28 +22,34 @@ Shader "Custom/SumofSines"
             #pragma fragment frag
             #include "UnityCG.cginc"
 
+            //Vertex Input
             struct appdata
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
 
+            //Vertex Output
             struct v2f
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex: SV_POSITION;
             };
 
+            //Shader Properties
             float _Amplitude;
             float _Wavelength;
             float _Speed;
 
+            //Vertex Calculations
             v2f vert(appdata v)
             {
                 v2f o;
+                //Sum of Sines Displacement (1 sin wave)
                 float displacement = _Amplitude * sin(_Time * (_Speed * ((2 * 3.1415) / _Wavelength) + v.vertex.x));
 
-                o.vertex = UnityObjectToClipPos(v.vertex + float4(0, displacement, 0, 0));
+                //Apply displacement to vertex position
+                o.vertex = UnityObjectToClipPos(v.vertex + float4(0, displacement, 0, 0)); //only displace y
                 o.uv = v.uv;
 
                 return o;
